@@ -22,11 +22,25 @@ class MdPrioridadeIntegracao extends SeiIntegracao
     }
 
 
-    public function montarIconeControleProcessos($arrObjProcedimentoAPI) {
-        $arrIcones = array();
+    public function montarIconeControleProcessos($arrObjProcedimentoAPI)
+    {
+        $arrIcones = [];
 
         foreach ($arrObjProcedimentoAPI as $objProcedimentoAPI) {
             $idProcesso = $objProcedimentoAPI->getIdProcedimento();
+
+            $nivel = null;
+            try {
+                $nivel = (new PrioridadeRN())->consultar($idProcesso);
+            } catch (Exception $e) {
+                $nivel = null;
+            }
+
+            $nomeIcone = 'prioridade.svg'; // padrão
+            if ($nivel) {
+                $nivelFormatado = strtolower($nivel);
+                $nomeIcone = "prioridade-{$nivelFormatado}.svg";
+            }
 
             $link = SessaoSEI::getInstance()->assinarLink(
                     'controlador.php?acao=md_prioridade_int_abrir_pagina_prioridade&id_procedimento=' . $idProcesso
@@ -34,13 +48,16 @@ class MdPrioridadeIntegracao extends SeiIntegracao
 
             $icone = '<a href="' . $link . '" '
                     . PaginaSEI::montarTitleTooltip('Definir Prioridade', 'Módulo de Prioridade') . '>'
-                    . '<img src="modulos/md-prioridade/assets/svg/prioridade.svg" id="imgPrioridadeProcesso" class="imgPrioridadeProcesso" style="width:24px; height:24px;" />'
+                    . '<img src="modulos/md-prioridade/assets/svg/' . $nomeIcone . '" '
+                    . 'id="imgPrioridadeProcesso_' . $idProcesso . '" '
+                    . 'class="imgPrioridadeProcesso" '
+                    . 'style="width:24px; height:24px;" />'
                     . '</a>';
-
 
             $arrIcones[$idProcesso][] = $icone;
         }
 
+        var_dump($arrIcones);
         return $arrIcones;
     }
 
@@ -54,13 +71,6 @@ class MdPrioridadeIntegracao extends SeiIntegracao
         return false;
     }
 
-    public function processarControladorAjax($strAcaoAjax)
-    {
-        if ($strAcaoAjax == 'md_prioridade_ajax_salvar') {
-            require_once dirname(__FILE__) . '/ws/PrioridadeWS.php';
-            $ws = new PrioridadeWS();
-            $ws->salvarPrioridadeAjax();
-        }
-    }
+
 
 }

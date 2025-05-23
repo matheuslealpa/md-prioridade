@@ -1,1 +1,5 @@
 /.idea/
+/composer.json
+/oracle/
+/solr_dados/
+/docker-compose.yml
