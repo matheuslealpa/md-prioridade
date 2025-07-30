@@ -12,6 +12,19 @@ CREATE SEQUENCE seq_md_prioridade
     INCREMENT BY 1 NOCACHE
   NOCYCLE;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- 3. Trigger
 CREATE
 OR REPLACE TRIGGER trg_md_prioridade_bi
