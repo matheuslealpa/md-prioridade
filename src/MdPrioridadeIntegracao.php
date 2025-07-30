@@ -18,7 +18,7 @@ class MdPrioridadeIntegracao extends SeiIntegracao
 
     public function getInstituicao()
     {
-        return "LEAL";
+        return "TESTE";
     }
 
 
