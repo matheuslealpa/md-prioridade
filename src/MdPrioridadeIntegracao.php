@@ -57,7 +57,6 @@ class MdPrioridadeIntegracao extends SeiIntegracao
             $arrIcones[$idProcesso][] = $icone;
         }
 
-        var_dump($arrIcones);
         return $arrIcones;
     }
 
